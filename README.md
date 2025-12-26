@@ -1,5 +1,19 @@
 # ThreatShield - Email Phishing Detection System
 
+<div align="center">
+
+[![Live Website](https://img.shields.io/badge/Live-Website-brightgreen?style=for-the-badge&logo=vercel)](https://threat-shield-phishing-email-detect.vercel.app/)
+[![Report Bug](https://img.shields.io/badge/Report-Bug-red?style=for-the-badge&logo=github)](https://github.com/piyush-jha-16/ThreatShield-Phishing-Email-Detector/issues)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+
+**Master Email Security Through Interactive, Real-Time Analysis**
+
+[View Demo](https://threat-shield-phishing-email-detect.vercel.app/) · [Report Bug](https://github.com/piyush-jha-16/ThreatShield-Phishing-Email-Detector/issues) · [Request Feature](https://github.com/piyush-jha-16/ThreatShield-Phishing-Email-Detector/issues)
+
+</div>
+
+---
+
 A professional, enterprise-grade email phishing detection web application using **rule-based and heuristic analysis**. This system provides comprehensive security analysis without relying on AI or Machine Learning, using deterministic detection rules instead.
 
 ## Features
