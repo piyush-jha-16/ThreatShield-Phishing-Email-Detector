@@ -59,8 +59,22 @@ SUSPICIOUS_DOMAINS = [
 
 LEGITIMATE_DOMAINS = [
     'google.com', 'microsoft.com', 'apple.com', 'amazon.com', 'facebook.com',
-    'linkedin.com', 'twitter.com', 'github.com', 'stackoverflow.com'
+    'linkedin.com', 'twitter.com', 'github.com', 'stackoverflow.com', 'paypal.com',
+    'netflix.com', 'instagram.com', 'yahoo.com', 'dropbox.com', 'spotify.com'
 ]
+
+# Common typosquatting character substitutions
+TYPOSQUATTING_CHARS = {
+    'a': ['4', '@'],
+    'e': ['3'],
+    'i': ['1', '!', 'l'],
+    'l': ['1', 'i', '!'],
+    'o': ['0'],
+    's': ['5', '$'],
+    't': ['7'],
+    'g': ['9'],
+    'b': ['8']
+}
 
 
 class PhishingDetector:
@@ -101,6 +115,22 @@ class PhishingDetector:
             'details': self.details
         }
     
+    def _check_typosquatting(self, domain):
+        """Detect typosquatting attempts against known brands"""
+        for legit_domain in LEGITIMATE_DOMAINS:
+            legit_name = legit_domain.split('.')[0]  # e.g., 'paypal' from 'paypal.com'
+            
+            # Check if the domain contains a variant of the legitimate name
+            if len(legit_name) >= 4:  # Only check meaningful brand names
+                # Generate potential typosquat patterns
+                for i, char in enumerate(legit_name):
+                    if char in TYPOSQUATTING_CHARS:
+                        for replacement in TYPOSQUATTING_CHARS[char]:
+                            typo_variant = legit_name[:i] + replacement + legit_name[i+1:]
+                            if typo_variant in domain and legit_domain not in domain:
+                                return legit_name, typo_variant
+        return None, None
+    
     def _check_sender_authenticity(self, sender, headers):
         """Check sender email and domain authenticity"""
         if not sender:
@@ -119,6 +149,12 @@ class PhishingDetector:
                 if domain.endswith(suspicious_tld):
                     self.risk_score += 25
                     self.flags.append(f'Suspicious domain TLD: {suspicious_tld}')
+            
+            # Check for typosquatting
+            legit_brand, typo_variant = self._check_typosquatting(domain)
+            if legit_brand:
+                self.risk_score += 50
+                self.flags.append(f'TYPOSQUATTING DETECTED: Domain mimics "{legit_brand}" using character substitution ({typo_variant})')
             
             # Check for domain spoofing attempts
             for legit_domain in LEGITIMATE_DOMAINS:
