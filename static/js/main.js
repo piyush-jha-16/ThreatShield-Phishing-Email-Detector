@@ -132,7 +132,8 @@ async function handleLogin(e) {
         if (data.success) {
             AppState.isAuthenticated = true;
             AppState.currentUser = username;
-            showMainApp();
+            updateAuthUI();
+            closeAuthModal();
         } else {
             showError(data.message, 'loginError');
         }
@@ -179,10 +180,12 @@ async function handleLogout() {
         await fetch('/api/logout', { method: 'POST' });
         AppState.isAuthenticated = false;
         AppState.currentUser = null;
-        location.reload();
+        updateAuthUI();
     } catch (error) {
         console.error('Logout error:', error);
-        location.reload();
+        AppState.isAuthenticated = false;
+        AppState.currentUser = null;
+        updateAuthUI();
     }
 }
 
@@ -206,10 +209,34 @@ function switchToLogin() {
     clearError('registerError');
 }
 
-function showMainApp() {
+function showLoginModal() {
+    document.getElementById('authModal').classList.add('active');
+    switchToLogin();
+}
+
+function closeAuthModal() {
     document.getElementById('authModal').classList.remove('active');
-    document.getElementById('mainApp').classList.add('active');
-    document.getElementById('currentUser').textContent = AppState.currentUser;
+}
+
+function updateAuthUI() {
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const userInfoSection = document.getElementById('userInfoSection');
+    const currentUserEl = document.getElementById('currentUser');
+    
+    if (AppState.isAuthenticated && AppState.currentUser) {
+        // Show user info and logout button
+        loginBtn.style.display = 'none';
+        logoutBtn.style.display = 'flex';
+        userInfoSection.style.display = 'flex';
+        currentUserEl.textContent = AppState.currentUser;
+    } else {
+        // Show login button
+        loginBtn.style.display = 'flex';
+        logoutBtn.style.display = 'none';
+        userInfoSection.style.display = 'none';
+        currentUserEl.textContent = '';
+    }
 }
 
 function switchTab(tab) {
@@ -418,10 +445,10 @@ function displayFlags(flags) {
         const flagItem = document.createElement('div');
         flagItem.className = `flag-item ${severity}`;
         flagItem.innerHTML = `
-            <svg class="flag-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                <line x1="12" y1="9" x2="12" y2="13"/>
-                <line x1="12" y1="17" x2="12.01" y2="17"/>
+            <svg class="flag-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" fill="currentColor" fill-opacity="0.2" stroke="currentColor" stroke-width="2"/>
+                <line x1="12" y1="9" x2="12" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="12" y1="17" x2="12.01" y2="17" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
             </svg>
             <span class="flag-text">${escapeHtml(flag)}</span>
         `;
