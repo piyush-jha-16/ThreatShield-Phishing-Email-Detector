@@ -379,13 +379,13 @@ textarea {
 
 .btn-primary:hover:not(:disabled) {
     background: linear-gradient(135deg, #45a377 0%, #4ab88b 100%);
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 6px 20px rgba(80, 184, 136, 0.4), 0 0 30px var(--color-accent-glow);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(80, 184, 136, 0.35), 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .btn-primary:active:not(:disabled) {
-    transform: translateY(-1px) scale(1);
-    box-shadow: 0 2px 8px rgba(80, 184, 136, 0.25);
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(80, 184, 136, 0.3);
     transition: all 0.1s;
 }
 
@@ -442,6 +442,158 @@ textarea {
 .link-btn:hover {
     color: var(--color-accent-hover);
     text-decoration: underline;
+}
+
+/* === Theme Toggle === */
+.theme-toggle {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-base);
+    overflow: hidden;
+    color: var(--color-text-secondary);
+}
+
+.theme-toggle:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-light);
+    color: var(--color-text-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle:active {
+    transform: translateY(0) scale(0.96);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle-icon {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle-icon svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    stroke: currentColor;
+}
+
+.sun-icon {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+
+.moon-icon {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(-90deg) scale(0.5);
+}
+
+/* Light mode styles (when body has .light-mode class) */
+body.light-mode .sun-icon {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(90deg) scale(0.5);
+}
+
+body.light-mode .moon-icon {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+
+/* Light mode color overrides */
+body.light-mode {
+    --color-background: #f5f7fa;
+    --color-surface: #ffffff;
+    --color-surface-elevated: #fafbfc;
+    --color-surface-hover: #f0f2f5;
+    --color-border: #d1d9e0;
+    --color-border-light: #b8c5d3;
+    
+    --color-text-primary: #1a1d23;
+    --color-text-secondary: #4a5568;
+    --color-text-tertiary: #718096;
+    --color-text-inverse: #ffffff;
+    
+    --color-accent: #3fa876;
+    --color-accent-hover: #368d65;
+    --color-accent-light: rgba(63, 168, 118, 0.1);
+    --color-accent-glow: rgba(63, 168, 118, 0.25);
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 4px 6px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+    --shadow-xl: 0 8px 16px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.06);
+}
+
+body.light-mode .theme-toggle {
+    background: var(--color-surface-elevated);
+    border-color: var(--color-border);
+}
+
+body.light-mode .theme-toggle:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-light);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Light mode header overrides */
+body.light-mode .app-header {
+    background: rgba(255, 255, 255, 0.98);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+body.light-mode .header-divider {
+    background: var(--color-border);
+}
+
+body.light-mode .header-title {
+    color: var(--color-text-secondary);
+}
+
+body.light-mode .user-info {
+    background: var(--color-surface-elevated);
+    border-color: var(--color-border);
+}
+
+body.light-mode .user-info:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-light);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Light mode modal overrides */
+body.light-mode .modal-backdrop {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+body.light-mode .auth-container {
+    background: var(--color-surface);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12), 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .modal-close-btn {
+    background: var(--color-surface-elevated);
+    border-color: var(--color-border);
+}
+
+body.light-mode .modal-close-btn:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-light);
 }
 
 /* === Error Messages === */
