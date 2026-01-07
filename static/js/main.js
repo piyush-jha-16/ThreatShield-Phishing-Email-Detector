@@ -25,6 +25,39 @@ function initializeApp() {
     setupEventListeners();
     setupDragAndDrop();
     checkAuthenticationState();
+    initializeTheme();
+}
+
+// ==========================================
+// Theme Management
+// ==========================================
+function initializeTheme() {
+    // Check if user has a saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+    }
+}
+
+function toggleTheme() {
+    const body = document.body;
+    const themeToggle = document.getElementById('themeToggle');
+    const isLightMode = body.classList.toggle('light-mode');
+    
+    // Save preference to localStorage
+    localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+    
+    // Add a smooth rotation animation
+    themeToggle.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+    themeToggle.style.transform = 'rotate(360deg)';
+    
+    setTimeout(() => {
+        themeToggle.style.transform = '';
+        // Reset after animation completes
+        setTimeout(() => {
+            themeToggle.style.transition = '';
+        }, 50);
+    }, 500);
 }
 
 // ==========================================
