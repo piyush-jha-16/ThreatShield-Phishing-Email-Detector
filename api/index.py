@@ -1,3 +1,6 @@
+"""
+Vercel serverless function entry point
+"""
 import sys
 import os
 
